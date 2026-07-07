@@ -1,0 +1,46 @@
+# Smart glasses command set.
+# Read actions sit low on the ladder; write actions climb it;
+# irreversible actions demand L3_explicit + explicit confirmation.
+
+commands:
+  - intent: what_time
+    description: Speak the current time.
+    min_level: L0_none
+    reversible: true
+    availability: [online, offline]
+    confirmation: none
+
+  - intent: navigate_home
+    description: Start turn-by-turn navigation to the saved home address.
+    min_level: L1_passive
+    reversible: true
+    availability: [online]
+    confirmation: none
+
+  - intent: read_messages
+    description: Read the latest unread messages aloud.
+    min_level: L1_passive
+    reversible: true
+    availability: [online]
+    confirmation: none
+
+  - intent: send_message
+    description: Dictate and send a message to a contact.
+    min_level: L2_verified
+    reversible: true
+    availability: [online]
+    confirmation: audio          # "Send it?" before acting
+
+  - intent: add_calendar_event
+    description: Create a calendar event from dictation.
+    min_level: L2_verified
+    reversible: true
+    availability: [online]
+    confirmation: audio
+
+  - intent: pay
+    description: Make a payment to a contact or merchant.
+    min_level: L3_explicit
+    reversible: false            # money is high-stakes / irreversible
+    availability: [online]
+    confirmation: explicit       # active challenge, never auto-confirmed
