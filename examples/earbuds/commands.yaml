@@ -1,1 +1,32 @@
+# Earbuds command set: read actions only, nothing above L1_passive.
+# (Note "answer_call" is mildly write-ish -- a stranger could answer your
+# incoming call -- but L1-paired is a reasonable bar for it.)
 
+commands:
+  - intent: play_pause
+    description: Toggle playback.
+    min_level: L0_none
+    reversible: true
+    availability: [online, offline]
+    confirmation: none
+
+  - intent: volume_up
+    description: Raise the volume one step.
+    min_level: L0_none
+    reversible: true
+    availability: [online, offline]
+    confirmation: none
+
+  - intent: answer_call
+    description: Answer the incoming call.
+    min_level: L1_passive
+    reversible: true
+    availability: [online]
+    confirmation: none
+
+  - intent: read_notifications
+    description: Read recent notifications aloud.
+    min_level: L1_passive
+    reversible: true
+    availability: [online]
+    confirmation: none

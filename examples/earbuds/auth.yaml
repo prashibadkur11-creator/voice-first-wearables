@@ -1,1 +1,21 @@
+# Earbuds: the minimal example.
+# One factor, two levels -- L2/L3 are simply not defined.
+#
+# Design principle (read vs write): these earbuds only do READ actions
+# (play music, hear notifications). An impersonator gains almost nothing,
+# so passive trust is enough. L2/L3 exist for WRITE actions (send, pay,
+# delete) -- there are none here, so the config doesn't define them.
+# This is the optional-levels model: define only the rungs you use.
 
+factors: [proximity]             # no voiceprint hardware, no PIN flow
+
+levels:
+  # Anyone: transport controls.
+  L0_none: {}
+
+  # Paired to the owner's phone: personal reads.
+  L1_passive:
+    requires: [proximity]
+
+fallbacks:
+  device_unworn: reset_to_l0     # earbud out of ear -> trust wiped
