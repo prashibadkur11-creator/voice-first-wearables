@@ -1,0 +1,32 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate example configs (schema + cross-file gate)
+        run: |
+          python validate/validate_config.py examples/smart-glasses/auth.yaml examples/smart-glasses/commands.yaml
+          python validate/validate_config.py examples/earbuds/auth.yaml examples/earbuds/commands.yaml
+
+      - name: Show warn-only demo (risky file warns but does not fail)
+        run: |
+          python validate/validate_config.py examples/smart-glasses/auth.yaml examples/smart-glasses/commands.risky.yaml
+
+      - name: Run test suite
+        run: PYTHONPATH=src pytest tests/ -v
