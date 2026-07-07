@@ -1,0 +1,61 @@
+# JSON Schema (Draft 2020-12) for a wearable command set.
+# A developer's commands.yaml is validated against this contract.
+#
+# Each command declares the MINIMUM assurance level it needs, whether it is
+# reversible, where it is available (online/offline), and its confirmation style.
+# The validator additionally enforces a warn-only rule: irreversible commands
+# SHOULD require L3_explicit.
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://github.com/prashibadkur11-creator/voice-first-wearables/schema/commands.schema.yaml"
+title: WearableCommandSet
+type: object
+additionalProperties: false
+required: [commands]
+
+properties:
+
+  commands:
+    type: array
+    minItems: 1
+    items: { $ref: "#/$defs/command" }
+
+$defs:
+
+  command:
+    type: object
+    additionalProperties: false
+    required: [intent, min_level, reversible, availability, confirmation]
+    properties:
+
+      intent:
+        description: Stable id the developer routes to a handler (e.g. send_message).
+        type: string
+        pattern: "^[a-z][a-z0-9_]*$"
+
+      min_level:
+        description: Minimum assurance level required to run this command.
+        enum: [L0_none, L1_passive, L2_verified, L3_explicit]
+
+      reversible:
+        description: >
+          False marks the action as high-stakes / irreversible (payment, unlock,
+          delete). The validator warns if a false here is not gated at L3_explicit.
+        type: boolean
+
+      availability:
+        description: Where the command can run. Cloud-only commands omit "offline".
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          enum: [online, offline]
+
+      confirmation:
+        description: >
+          How the device confirms before acting. "none" = act immediately;
+          "audio" = spoken "are you sure?"; "explicit" = active challenge / PIN.
+        enum: [none, audio, explicit]
+
+      description:
+        description: Optional human-readable note for the catalog/README.
+        type: string
