@@ -1,0 +1,21 @@
+# *** DELIBERATELY MISCONFIGURED -- DO NOT COPY ***
+#
+# This file exists to demonstrate the validator's warn-only policy layer.
+# It declares an irreversible command gated far too low, with no confirmation.
+#
+# Try it:
+#   python validate/validate_config.py examples/smart-glasses/auth.yaml \
+#                                      examples/smart-glasses/commands.risky.yaml
+#
+# You'll see:
+#   WARN [W1] ... gated at 'L1_passive' -- consider L3_explicit
+#   WARN [W2] ... has confirmation: none -- consider 'audio' or 'explicit'
+#   OK: 0 errors, 2 warning(s)        <- warnings, but exit 0: dev can override
+
+commands:
+  - intent: delete_all_photos
+    description: Permanently delete every photo on the device. (Yikes.)
+    min_level: L1_passive        # <- W1: irreversible action, weak gate
+    reversible: false
+    availability: [online, offline]
+    confirmation: none           # <- W2: no "are you sure?" at all
