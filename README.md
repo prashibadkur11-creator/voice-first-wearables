@@ -1,4 +1,5 @@
 # voice-first-wearables
+![License: MIT](https://img.shields.io/github/license/prashibadkur11-creator/voice-first-wearables) ![CI](https://img.shields.io/github/actions/workflow/status/prashibadkur11-creator/voice-first-wearables/validate.yml?branch=main&label=CI)
 
 **A voice-first auth + command library for AI-native wearables — smart glasses, earbuds, rings.**
 
